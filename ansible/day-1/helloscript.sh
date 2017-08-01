@@ -1,2 +1,2 @@
 # /usr/bin/
-echo "Hello world!"
+CATALINA_HOME=/opt/tomcat/8.5.9/

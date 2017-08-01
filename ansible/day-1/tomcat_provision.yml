@@ -21,29 +21,34 @@
       path: /home/vagrant/helloworld.sh
       state: absent
   - name: Ensure that student group exist
-    sudo: yes
+    become: yes
+    become_user: root
     group:
       name: student
       state: present
   - name: Ensure that tomcat_sa group exist
-    sudo: yes
+    become: yes
+    become_user: root
     group:
       name: tomcat_as
       state: present
   - name: Ensure that student user exist
-    sudo: yes
+    become: yes
+    become_user: root
     user:
       name: student
       state: present
       group: student
   - name: Ensure that tomcat-sa user exist
-    sudo: yes
+    become: yes
+    become_user: root
     user:
       name: tomcat_as
       state: present
       group: tomcat_as
   - name: Ensure that archive exist
-    sudo: yes
+    become: yes
+    become_user: root
     get_url:
       url: http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.9/bin/apache-tomcat-8.5.9.tar.gz
       dest: /home/vagrant/
@@ -51,17 +56,24 @@
       owner: tomcat_as
       group: tomcat_as
   - name: Ensure that tomcat folder will be created
-    sudo: yes
+    become: yes
+    become_user: root
     file:
      path: /opt/tomcat/
      state: absent
   - name: Ensure that folder for tomcat exist
-    sudo: yes
+    become: yes
+    become_user: root
+    #shell: mkdir -p /opt/tomcat/ $$ chown tomcat_as:tomcat_as /opt/tomcat/
     file:
-      path: /opt/tomcat/
+      path: /opt/tomcat/8.5.9/
       state: directory
+      owner: tomcat_as
+      group: tomcat_as
+      mode: 0755
   - name: Ensure that tomcat will be installed from right archive
-    sudo: yes
+    become: yes
+    become_user: root
     unarchive:
       src: /home/vagrant/apache-tomcat-8.5.9.tar.gz
       dest: /opt/tomcat/
@@ -69,7 +81,18 @@
       group: tomcat_as
       remote_src: yes
   - name: Create correct tomcat folder
-    sudo: yes
+    become: yes
+    become_user: root
     command: mv -uf /opt/tomcat/apache-tomcat-8.5.9/ /opt/tomcat/8.5.9/
-  - name: Make exactly right CATALINA_HOME
-    shell: CATALINA_HOME="/opt/tomcat/8.5.9/"
+  - name: Make tomcat.service correct
+    become: yes
+    become_user: root
+    copy:
+      src: /home/student/cm/ansible/day-1/tomcat.service
+      dest: /usr/lib/systemd/system/tomcat.service
+  - name: Execute tomcat as tomcat_as 
+    become: yes
+    become_method: sudo
+    service:
+      name: tomcat.service
+      state: started
