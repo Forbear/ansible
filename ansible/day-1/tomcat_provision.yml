@@ -2,6 +2,74 @@
   hosts: all
 
   tasks:
-  - debug: var=ansible_user_id
-  - shell: echo Hello World!
-
+  - name: ensure apache is at the latest version
+    yum: name=java state=latest
+    become: yes
+    become_method: sudo
+  - name: Ensure that backup exist
+    copy:
+      backup: yes
+      src: /home/student/cm/ansible/day-1/helloscript.sh
+      dest: /home/vagrant/helloscript.sh
+      owner: vagrant
+      group: vagrant
+      mode: 0776
+  - name: Execute script to be ensured
+    shell: /home/vagrant/helloscript.sh
+  - name: Ensure helloscript.sh exist and executable
+    file: 
+      path: /home/vagrant/helloworld.sh
+      state: absent
+  - name: Ensure that student group exist
+    sudo: yes
+    group:
+      name: student
+      state: present
+  - name: Ensure that tomcat_sa group exist
+    sudo: yes
+    group:
+      name: tomcat_as
+      state: present
+  - name: Ensure that student user exist
+    sudo: yes
+    user:
+      name: student
+      state: present
+      group: student
+  - name: Ensure that tomcat-sa user exist
+    sudo: yes
+    user:
+      name: tomcat_as
+      state: present
+      group: tomcat_as
+  - name: Ensure that archive exist
+    sudo: yes
+    get_url:
+      url: http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.9/bin/apache-tomcat-8.5.9.tar.gz
+      dest: /home/vagrant/
+      mode: 0666
+      owner: tomcat_as
+      group: tomcat_as
+  - name: Ensure that tomcat folder will be created
+    sudo: yes
+    file:
+     path: /opt/tomcat/
+     state: absent
+  - name: Ensure that folder for tomcat exist
+    sudo: yes
+    file:
+      path: /opt/tomcat/
+      state: directory
+  - name: Ensure that tomcat will be installed from right archive
+    sudo: yes
+    unarchive:
+      src: /home/vagrant/apache-tomcat-8.5.9.tar.gz
+      dest: /opt/tomcat/
+      owner: tomcat_as
+      group: tomcat_as
+      remote_src: yes
+  - name: Create correct tomcat folder
+    sudo: yes
+    command: mv -uf /opt/tomcat/apache-tomcat-8.5.9/ /opt/tomcat/8.5.9/
+  - name: Make exactly right CATALINA_HOME
+    shell: CATALINA_HOME="/opt/tomcat/8.5.9/"
