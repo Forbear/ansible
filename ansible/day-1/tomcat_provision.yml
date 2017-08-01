@@ -1,0 +1,7 @@
+- name: Hello playbook
+  hosts: all
+
+  tasks:
+  - debug: var=ansible_user_id
+  - shell: echo Hello World!
+
