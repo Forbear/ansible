@@ -34,7 +34,7 @@ user
 
 yum  
 
-<img src="pictures/ansible_yum.png">
+<img src="ansible/day-1/pictures/ansible_yum.png">
 
 Define play variables (at least):  
 
