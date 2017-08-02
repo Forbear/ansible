@@ -66,7 +66,7 @@
     become_user: root
     #shell: mkdir -p /opt/tomcat/ $$ chown tomcat_as:tomcat_as /opt/tomcat/
     file:
-      path: /opt/tomcat/8.5.9/
+      path: /opt/tomcat/
       state: directory
       owner: tomcat_as
       group: tomcat_as
@@ -83,7 +83,7 @@
   - name: Create correct tomcat folder
     become: yes
     become_user: root
-    command: mv -uf /opt/tomcat/apache-tomcat-8.5.9/ /opt/tomcat/8.5.9/
+    command: mv -uf /opt/tomcat/apache-tomcat-8.5.9 /opt/tomcat/8.5.9
   - name: Make tomcat.service correct
     become: yes
     become_user: root
@@ -95,4 +95,19 @@
     become_method: sudo
     service:
       name: tomcat.service
-      state: started
+      state: restarted
+  - name: Wait for tomcat
+    wait_for:
+      host: localhost
+      port: 8080
+      delay: 8
+  - name: Ensure that tomcat working
+    shell: curl 192.168.100.101:8080
+  - name: Second ensure that tomcat working
+    shell: systemctl status tomcat
+    become: yes
+    become_method: sudo
+  - name: Third ensure that tomcat working
+    shell: cat /opt/tomcat/8.5.9/temp/tomcat.pid
+    become: yes
+    become_method: sudo
