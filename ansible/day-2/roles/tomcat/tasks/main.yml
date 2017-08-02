@@ -52,7 +52,7 @@
 - name: Create correct tomcat folder
   become: yes
   become_user: root
-  command: mv -uf /opt/tomcat/apache-tomcat-8.5.9 /opt/tomcat/8.5.9
+  command: mv -uf "{{ home_dir }}apache-tomcat-{{ sub_version }}" "{{ home_dir }}{{ sub_version}}"
 - name: Make tomcat.service correct
   become: yes
   become_user: root
