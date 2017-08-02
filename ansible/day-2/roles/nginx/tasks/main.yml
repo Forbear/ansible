@@ -13,3 +13,7 @@
 - name: Ensure that nginx started
   shell: echo "Nginx start!"
   notify: start nginx
+- name: create fact
+  become: yes
+  become_user: root
+  shell: nginx -v 2>> /etc/ansible/facts.d/nginx.fact && {{ replace }}
