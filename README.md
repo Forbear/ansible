@@ -22,7 +22,7 @@ service
 
 shell  
 
-<img src="ansible/day-1/pictures/ansible_pictures.png">
+<img src="ansible/day-1/pictures/ansible_shell.png">
 
 unarchive  
 
