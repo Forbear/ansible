@@ -1,2 +1,6 @@
 ---
 # defaults file for nginx
+{
+  home_dir: /opt/nginx/,
+  version: 1.12.1
+}

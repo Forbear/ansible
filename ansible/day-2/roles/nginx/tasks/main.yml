@@ -1,2 +1,15 @@
 ---
 # tasks file for nginx
+- name: Install nginx
+  become: yes
+  become_user: root
+  yum: name=nginx state=latest
+- name: Make nginx correct
+  become: yes
+  become_user: root
+  template:
+    src: nginx.conf.j2d
+    dest: /etc/nginx/nginx.conf
+- name: Ensure that nginx started
+  shell: echo "Nginx start!"
+  notify: start nginx

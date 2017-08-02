@@ -2,3 +2,4 @@
   roles:
   - java
   - tomcat
+  - nginx

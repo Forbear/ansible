@@ -1,2 +1,5 @@
 ---
 # vars file for nginx
+{
+  url: "http://nginx.org/download/nginx-{{ version }}.tar.gz"
+}
