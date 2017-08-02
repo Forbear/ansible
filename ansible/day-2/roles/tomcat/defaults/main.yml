@@ -1,0 +1,7 @@
+---
+# defaults file for tomcat
+{
+  version: 8,
+  sub_version: 8.5.9,
+  home_dir: /opt/tomcat/
+}

@@ -1,0 +1,7 @@
+---
+# tasks file for java
+# tasks:
+- name: ensure that java is at the latest version
+  yum: name=java state=latest
+  become: yes
+  become_method: sudo

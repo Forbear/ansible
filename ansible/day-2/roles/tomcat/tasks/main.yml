@@ -1,0 +1,73 @@
+---
+# tasks file for tomcat
+- name: Check
+  shell: echo {{ version }}
+- name: Ensure that tomcat_sa group exist
+  become: yes
+  become_user: root
+  group:
+    name: tomcat_as
+    state: present
+- name: Ensure that tomcat-sa user exist
+  become: yes
+  become_user: root
+  user:
+    name: tomcat_as
+    state: present
+    group: tomcat_as
+- name: Ensure that archive exist
+  become: yes
+  become_user: root
+  get_url:
+    url: "{{ url }}"
+    dest: /home/vagrant/
+    mode: 0666
+    owner: tomcat_as
+    group: tomcat_as
+- name: Ensure that tomcat folder will be created
+  become: yes
+  become_user: root
+  file:
+    path: "{{ home_dir }}"
+    state: absent
+- name: Ensure that folder for tomcat exist
+  become: yes
+  become_user: root
+  file:
+    path: "{{ home_dir }}"
+    state: directory
+    owner: tomcat_as
+    group: tomcat_as
+    mode: 0755
+- name: Ensure that tomcat will be installed from right archive
+  become: yes
+  become_user: root
+  unarchive:
+    src: "/home/vagrant/apache-tomcat-{{ sub_version }}.tar.gz"
+    dest: "{{ home_dir }}"
+    owner: tomcat_as
+    group: tomcat_as
+    remote_src: yes
+#register: output 
+- name: Create correct tomcat folder
+  become: yes
+  become_user: root
+  command: mv -uf /opt/tomcat/apache-tomcat-8.5.9 /opt/tomcat/8.5.9
+- name: Make tomcat.service correct
+  become: yes
+  become_user: root
+  copy:
+    src: /home/student/cm/ansible/day-1/tomcat.service
+    dest: /usr/lib/systemd/system/tomcat.service
+- name: Execute tomcat as tomcat_as
+  become: yes
+  become_method: sudo
+  service:
+    name: tomcat.service
+    state: restarted
+- name: Wait for tomcat
+  wait_for:
+    host: localhost
+    port: 8080
+    delay: 8
+
