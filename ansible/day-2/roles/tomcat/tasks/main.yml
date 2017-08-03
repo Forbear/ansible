@@ -62,3 +62,13 @@
 - name: Ensure that tomcat started
   shell: echo "Change state!"
   notify: start tomcat
+- name: Create fact script
+  become: yes
+  become_user: root
+  template:
+    src: tomcat_version.sh.j2d
+    dest: /tmp/script.sh
+- name: Create fact
+  become: yes
+  become_user: root
+  shell: sh /tmp/script.sh

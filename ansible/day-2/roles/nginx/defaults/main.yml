@@ -3,5 +3,5 @@
 {
   home_dir: /opt/nginx/,
   version: 1.12.1,
-  replace: "sed -i 's/nginx version: /version=/g' /etc/ansible/facts.d/nginx.fact"
+  replace: "sed -i 's|nginx version: nginx/|version=|g' /etc/ansible/facts.d/nginx.fact"
 }

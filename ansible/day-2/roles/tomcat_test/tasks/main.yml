@@ -1,2 +1,3 @@
 ---
 # tasks file for tomcat_test
+- debug: var=ansible_local["tomcat"]

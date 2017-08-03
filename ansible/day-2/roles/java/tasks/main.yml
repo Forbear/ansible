@@ -8,4 +8,4 @@
 - name: create fact
   become: yes
   become_user: root
-  shell: java -version 2>> /etc/ansible/facts.d/java.fact
+  script: scripts/java_version.sh

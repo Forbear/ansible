@@ -1,3 +1,3 @@
 ---
 # tasks file for java_test
-- debug: var=ansible_local
+- debug: var=ansible_local["java"]

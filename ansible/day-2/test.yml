@@ -1,3 +1,5 @@
 - hosts: all
   roles:
   - nginx_test
+  - java_test
+  - tomcat_test
