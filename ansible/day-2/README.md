@@ -5,3 +5,4 @@
 ## tomcat_test (does only checks that tomcat installed and running properly)
 ## nginx (installs nginx)
 ## nginx_test (does only checks that nginx installed and running properly)
+<img src="pictures/ansible-day-2.png">
