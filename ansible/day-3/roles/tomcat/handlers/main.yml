@@ -1,0 +1,15 @@
+---
+# handlers file for tomcat
+- name: stop tomcat
+  become: yes
+  become_user: root
+  service: name=tomcat.service state=stopped
+- name: restart tomcat
+  become: yes
+  become_user: root
+  service: name=tomcat.service state=reloaded
+- name: start tomcat
+  become: yes
+  become_user: root
+  service: name=tomcat state=started
+

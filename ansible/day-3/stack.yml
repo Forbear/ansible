@@ -1,0 +1,12 @@
+- name: Installation
+  hosts: all
+  roles:
+  - java
+  - tomcat
+  - nginx
+- name: Varification
+  hosts: all
+  roles:
+  - java_test
+  - tomcat_test
+  - nginx_test

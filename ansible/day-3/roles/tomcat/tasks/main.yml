@@ -1,0 +1,74 @@
+---
+# tasks file for tomcat
+- name: Check
+  shell: echo {{ version }}
+- name: Ensure that {{ tomcat_group }} exist
+  become: yes
+  become_user: root
+  group:
+    name: "{{ tomcat_group }}"
+    state: present
+- name: Ensure that {{ tomcat_user }} user exist
+  become: yes
+  become_user: root
+  user:
+    name: "{{ tomcat_user }}"
+    state: present
+    group: "{{ tomcat_group }}"
+- name: Ensure that archive exist
+  become: yes
+  become_user: root
+  get_url:
+    url: "{{ url }}"
+    dest: /home/vagrant/
+    mode: 0666
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+- name: Ensure that tomcat folder will be created
+  become: yes
+  become_user: root
+  file:
+    path: "{{ home_dir }}"
+    state: absent
+  notify: stop tomcat
+- name: Ensure that folder for tomcat exist
+  become: yes
+  become_user: root
+  file:
+    path: "{{ home_dir }}"
+    state: directory
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+    mode: 0755
+- name: Ensure that tomcat will be installed from right archive
+  become: yes
+  become_user: root
+  unarchive:
+    src: "/home/vagrant/apache-tomcat-{{ sub_version }}.tar.gz"
+    dest: "{{ home_dir }}"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+    remote_src: yes
+- name: Create correct tomcat folder
+  become: yes
+  become_user: root
+  command: mv -uf "{{ home_dir }}apache-tomcat-{{ sub_version }}" "{{ home_dir }}{{ sub_version}}"
+- name: Make tomcat.service correct
+  become: yes
+  become_user: root
+  template:
+    src: tomcat.service.j2d
+    dest: /usr/lib/systemd/system/tomcat.service
+- name: Ensure that tomcat started
+  shell: echo "Change state!"
+  notify: start tomcat
+- name: Create fact script
+  become: yes
+  become_user: root
+  template:
+    src: tomcat_version.sh.j2d
+    dest: /tmp/script.sh
+- name: Create fact
+  become: yes
+  become_user: root
+  shell: sh /tmp/script.sh
