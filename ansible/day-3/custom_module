@@ -1,0 +1,8 @@
+IFS=' ' read -ra INFO_1 <<< "$(vagrant status | grep virtualbox)"
+cat << EOF
+{
+  "changed": false,
+  "name": "${INFO_1[0]}"
+  "state": "${INFO_1[1]}"
+}
+EOF
