@@ -1,6 +1,8 @@
 - name: Hello playbook
   hosts: all
-
+  vars:
+    version: 8
+    sub_version: 8.5.9
   tasks:
   - name: ensure apache is at the latest version
     yum: name=java state=latest
