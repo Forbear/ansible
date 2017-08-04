@@ -1,0 +1,29 @@
+#! /bin/bash
+
+function vagrant_status {
+  IFS=' ' read -ra INFO_1 <<< "$(vagrant status | grep virtualbox)"
+  if [ "${INFO_1[1]}" == "not" ]
+  then
+    INFO_1[1]="not created"
+  fi
+  cat << EXEC
+    {
+      "changed": false,
+      "name": "${INFO_1[0]}"
+      "state": "${INFO_1[1]}"
+      "arg": "$1"
+    }
+EXEC
+}
+case $1 in
+  started)
+  ;;
+  status)
+    vagrant_status
+  ;;
+  destroyed)
+  ;;
+esac
+# echo $2
+# echo $asd
+exit 0
