@@ -3,10 +3,10 @@ function vagrant_up {
   if [ "$V_STATE" == "not created" ] || [ "$V_STATE" == "poweroff" ]
   then
     vagrant up > /tmp/vagrant_up_log
-    echo '{ "state": "changed" }'
+    vagrant_status "true"
     exit 0
   else 
-    echo '{ "state": "ok" }'
+    vagrant_status "false"
     exit 0
   fi
 }
@@ -31,14 +31,16 @@ function vagrant_status {
       "port": "$PORT",
       "memory": "$MEMORY",
       "guest os": "$GUEST_OS",
-      "ip": "$IP"
+      "ip": "$IP",
+      "changed": "$1"
     }
 EXEC
   else
     cat << EXEC
     {
       "name": "${INFO_1[0]}",
-      "state": "${INFO_1[1]}"
+      "state": "${INFO_1[1]}",
+      "changed": "$1"
     }
 EXEC
   fi
@@ -48,28 +50,23 @@ function vagrant_destroy {
   then
     vagrant destroy -f > /tmp/vagrant_destroy_log
     rm -f /tmp/vagrant_up_log
-    echo '{ "state": "changed" }'
+    vagrant_status "true" 
     exit 0
   else 
-    echo '{ "state": "ok" }'
+    vagrant_status "false"
     exit 0
   fi
 }
 function vagrant_halt {
   if [ "$V_STATE" == "not created" ]
   then
-    echo '{ "state": "ok" }'
+    vagrant_status "false"
     exit 0
   else 
     vagrant halt > /tmp/vagrant_halt_log
-    echo '{ "state": "changed" }'
+    vagrant_status "true"
     exit 0
   fi
-}
-function test_func {
-  USER="$(vagrant ssh-config | grep -Po '(?<=User\s)\w+')"
-  PORT="$(vagrant ssh-config | grep -Po '(?<=Port\s)\w+')"
-  echo '{ "user":' '"'"$USER"'",' '"port":' '"'"$PORT"'"' "}"
 }
 source $1
 if [ ! -d "$path" ]
@@ -83,6 +80,7 @@ then
   echo '{ "msg": "No Vagrantfile" }'
   exit 1
 fi
+SSH_KEY_FILE="/home/student/.ssh/id_dsa"
 V_STATE="$(vagrant_status | jq -r '.state')"
 case "$stat" in
   start)
@@ -96,9 +94,6 @@ case "$stat" in
   ;;
   halt)
     vagrant_halt
-  ;;
-  test)
-    test_func
   ;;
 esac
 exit 0

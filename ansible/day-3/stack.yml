@@ -1,12 +1,25 @@
-- name: Installation
-  hosts: all
+- hosts: localhost
+  tasks:
+  - test_module:
+      path: "/home/student/cm/ansible/day-3/"
+      stat: "start"
+    register: out
+  - add_host:
+      name: "{{ out.name }}"
+      ansible_connection: "ssh"
+      ansible_host: "{{ out.ip }}"
+      ansible_port: "{{ out.port }}"
+      ansible_user: "{{ out.user }}"
+      group: test_group
+    when: out.state == "running"
+- hosts: test_group
   roles:
   - java
   - tomcat
   - nginx
-- name: Varification
-  hosts: all
-  roles:
-  - java_test
-  - tomcat_test
-  - nginx_test
+#- name : Destroy!
+#  hosts: localhost
+#  tasks:
+#  - test_module:
+#      path: "/home/student/cm/ansible/day-3/" 
+#      stat: "destroy"    
