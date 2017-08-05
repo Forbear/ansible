@@ -1,0 +1,5 @@
+---
+# vars file for tomcat
+{
+  url: "http://archive.apache.org/dist/tomcat/tomcat-{{version}}/v{{sub_version}}/bin/apache-tomcat-{{sub_version}}.tar.gz"
+}

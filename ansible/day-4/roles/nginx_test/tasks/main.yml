@@ -1,0 +1,3 @@
+---
+# tasks file for nginx_test
+- debug: var=ansible_local["nginx"]

@@ -1,0 +1,24 @@
+- name: Test
+  hosts: all
+  vars:
+    mongo_src:
+    - mongodb-linux-x86_64-rhel62-3.4
+    - mongodb-linux-x86_64-ubuntu1604-v3.4
+    - mongodb-linux-x86_64-rhel55-3.2
+    - mongodb-linux-x86_64-ubuntu1404-3.2
+    - mongodb-linux-x86_64-rhel70-3.2
+    - mongodb-linux-x86_64-rhel55-3.0
+    - mongodb-linux-x86_64-rhel64-3.0
+    - mongodb-linux-x86_64-suse12-v3.4
+    - mongodb-linux-x86_64-suse11-v3.4.7
+    mongodb_versions:
+    - "3.4"
+    - "3.0"
+    - "3.1"
+    - "4.4"
+    - "3.2"
+  tasks:
+  - debug: msg={{ mongo_src | get_mongo_src( ansible_distribution, ansible_distribution_major_version, item ) }}
+    with_items:
+    - "{{ mongodb_versions }}"
+  - debug: msg={{ mongo_src | get_mongo_src( "LUbuntu","16.04", "3.4" ) }}
