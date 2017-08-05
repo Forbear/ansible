@@ -7,4 +7,4 @@ ip address, port
 username to connect to VM  
 os_name  
 RAM size  
-<img src="pictures/ansible-day-3.png">
+<img src="pictures/ansible_day-3.png">
