@@ -1,8 +1,10 @@
 # Develop roles:
-## java (installs java)  
-## java_test (does only checks that java installed and running properly)  
-## tomcat (installs tomcat)
-## tomcat_test (does only checks that tomcat installed and running properly)
-## nginx (installs nginx)
-## nginx_test (does only checks that nginx installed and running properly)
-<img src="pictures/ansible-day-2.png">
+## test module return json with vagran machine status
+## Custom module return values:
+machine status  
+state: running, stopped, not created  
+ip address, port  
+username to connect to VM  
+os_name  
+RAM size  
+<img src="pictures/ansible-day-3.png">
