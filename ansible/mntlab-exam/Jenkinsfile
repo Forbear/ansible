@@ -3,7 +3,7 @@ node("${env.SLAVE}") {
   /*
     cleanWs()
   */
-    git branch: 'dsilniahin', url: 'git@git.epam.com:siarhei_beliakou/mntlab-exam.git'
+    git branch: 'master', url: 'https://github.com/Forbear/ansible.git'
   }
   stage("Build"){
     /*
