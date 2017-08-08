@@ -1,0 +1,6 @@
+- hosts: localhost
+  tasks:
+  - test_module:
+      path: "./"
+      stat: "destroy"
+    register: out

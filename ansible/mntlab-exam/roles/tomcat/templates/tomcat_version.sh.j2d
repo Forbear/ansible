@@ -1,0 +1,3 @@
+{{ home_dir }}{{ sub_version }}/bin/version.sh 1> /tmp/test.txt
+cat /tmp/test.txt | grep "Server number:" 1>> /etc/ansible/facts.d/tomcat.fact
+sed -i 's/Server number: /version=/g' /etc/ansible/facts.d/tomcat.fact

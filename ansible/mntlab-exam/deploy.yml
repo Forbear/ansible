@@ -1,0 +1,24 @@
+- hosts: localhost
+  tasks:
+  - test_module:
+      path: "./"
+      stat: "start"
+    register: out
+  - add_host:
+      name: "{{ out.name }}"
+      ansible_connection: "ssh"
+      ansible_host: "{{ out.ip }}"
+      ansible_port: "{{ out.port }}"
+      ansible_user: "{{ out.user }}"
+      group: test_group
+    when: out.state == "running"
+- hosts: localhost
+  tasks:
+  #- name: Time file
+  #  shell: echo $(date -u +%X) > /home/student/cm/ansible/day-4/deploy-info.txt
+  - name: deploy
+    deploy_war:
+      path: target/mnt-exam.war
+      url: http://ansible
+      user: deploy
+      pass: deploy

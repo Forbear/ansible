@@ -1,0 +1,4 @@
+---
+# tasks file for tomcat_test
+- debug: var=ansible_local["tomcat"]
+- shell: curl ansible/mnt-exam/

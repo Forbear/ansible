@@ -1,0 +1,19 @@
+- hosts: localhost
+  tasks:
+  - test_module:
+      path: "./"
+      stat: "start"
+    register: out
+  - add_host:
+      name: "{{ out.name }}"
+      ansible_connection: "ssh"
+      ansible_host: "{{ out.ip }}"
+      ansible_port: "{{ out.port }}"
+      ansible_user: "{{ out.user }}"
+      group: test_group
+    when: out.state == "running"
+- hosts: test_group
+  roles:
+  - java_test
+  - tomcat_test
+  - nginx_test

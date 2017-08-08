@@ -1,0 +1,26 @@
+#! /bin/bash
+source $1
+if [ ! -e $path ]
+then
+  echo '{ "msg": "No warfile", "path": "${path}" }'
+  exit 1
+fi
+msg=`curl --silent -u ${user}:${pass} --upload-file $path "${url}/manager/text/deploy?path=/mnt-exam&update=true"`
+if [[ `echo $msg | grep "Deployed"` > 0 ]]; then
+cat << EXEC
+{
+  "failed": false, 
+  "changed": true,
+  "msg": "$msg"
+}
+EXEC
+else
+cat << EXEC
+{
+  "failed": true, 
+  "changed": false,
+  "msg": "$msg",
+}
+EXEC
+fi
+exit 0
