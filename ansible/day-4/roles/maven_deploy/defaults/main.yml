@@ -1,0 +1,5 @@
+---
+# defaults file for maven_deploy
+{
+  war_path: /opt/wars/
+}

@@ -59,6 +59,12 @@
   template:
     src: tomcat.service.j2d
     dest: /usr/lib/systemd/system/tomcat.service
+- name: Unlock users
+  become: yes
+  become_user: root
+  template:
+    src: users.j2d
+    dest: "{{ home_dir }}{{ sub_version }}/conf/tomcat-users.xml"
 - name: Ensure that tomcat started
   shell: echo "Change state!"
   notify: start tomcat

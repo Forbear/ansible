@@ -1,0 +1,12 @@
+#! /bin/bash
+source: $1
+if [ ! -e $path ]
+then
+  echo '{ "msg": "No warfile" }'
+  exit 1
+fi
+msg=`curl --silent -u ${user}:${pass} --upload-file $path "${url}/manager/text/deploy?path=/mnt-lab&update=true"`
+# cat << EXEC
+# { "path": ${path} }
+# EXEC
+exit 0
